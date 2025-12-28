@@ -7,3 +7,4 @@ Feature: GitHub REST API - User endpoints test
     Given I have a valid access token
     When I fetch the current GitHub user
     Then the received status code is 200
+    And the user response JSON schema matches the one expected

@@ -15,6 +15,7 @@
         <serenity.version>5.0.2</serenity.version>
         <cucumber.version>7.33.0</cucumber.version>
         <junit.version>6.0.1</junit.version>
+        <restassured.version>6.0.0</restassured.version>
     </properties>
 
     <dependencies>
@@ -24,6 +25,11 @@
             <artifactId>serenity-cucumber</artifactId>
             <version>${serenity.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-rest-assured</artifactId>
+            <version>${serenity.version}</version>
         </dependency>
 
         <!-- Cucumber -->
@@ -58,7 +64,12 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>6.0.0</version>
+            <version>${restassured.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>${restassured.version}</version>
         </dependency>
 
         <!-- Utils -->
@@ -66,6 +77,16 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.42</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>3.2.0</version>
         </dependency>
 
         <!-- Logging -->

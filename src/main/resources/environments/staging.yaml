@@ -1,0 +1,4 @@
+version: 2022-11-28
+released: 2022-11-28
+baseURL: https://api.github.com
+local: true
