@@ -9,6 +9,10 @@ public class RandomValueUtils {
         return faker.lorem().sentence();
     }
 
+    public static String generateRandomParagraph() {
+        return faker.lorem().paragraph();
+    }
+
     public static String generateRandomDomain() {
         return faker.internet().domainName();
     }

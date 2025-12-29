@@ -12,6 +12,7 @@ public class Context {
     private Response response;
     private String username;
     private String repoName;
+    private Integer issueNumber;
 
     public static synchronized Context getContext() {
         if (instance == null) {

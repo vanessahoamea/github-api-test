@@ -24,8 +24,8 @@ public class RepoRequestModel {
         String providedDescription = repoDetails.get("description");
         String providedHomepage = repoDetails.get("homepage");
         String providedIsPrivate = repoDetails.get("private");
-        String providedHasIssues = repoDetails.get("private");
-        String providedAutoInit = repoDetails.get("private");
+        String providedHasIssues = repoDetails.get("has_issues");
+        String providedAutoInit = repoDetails.get("auto_init");
 
         name = repoDetails.get("name");
         description = Objects.equals(providedDescription, "@random") ? generateRandomSentence() : providedDescription;
