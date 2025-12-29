@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class RepoSteps {
     private final Context context = Context.getContext();
     private final SoftAssertions softly = new SoftAssertions();
+    private final GenericRetryClient<Response> retryClient = new GenericRetryClient<>();
 
     private RepoRequestModel repoRequestObject;
     private RepoResponseModel repoResponseObject;
@@ -47,14 +48,16 @@ public class RepoSteps {
     public void updateRepo(DataTable repoTable) {
         Map<String, String> repoDetails = repoTable.asMaps().getFirst();
         repoRequestObject = new RepoRequestModel(repoDetails);
-        Response response = new RepoRequest().patchRepo(context.getUsername(), context.getRepoName(), repoRequestObject);
+        Response response = retryClient.waitForStatusCode(
+                () -> new RepoRequest().patchRepo(context.getUsername(), context.getRepoName(), repoRequestObject),
+                HttpStatus.OK_200
+        );
         repoResponseObject = new RepoResponseModel(response);
         context.setResponse(response);
     }
 
     @When("I delete the newly created repository")
     public void deleteRepo() {
-        GenericRetryClient<Response> retryClient = new GenericRetryClient<>();
         Response response = retryClient.waitForStatusCode(
                         () -> new RepoRequest().deleteRepo(context.getUsername(), context.getRepoName()),
                         HttpStatus.NO_CONTENT_204
