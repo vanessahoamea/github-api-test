@@ -11,6 +11,7 @@ public class Context {
 
     private Response response;
     private String username;
+    private String repoName;
 
     public static synchronized Context getContext() {
         if (instance == null) {

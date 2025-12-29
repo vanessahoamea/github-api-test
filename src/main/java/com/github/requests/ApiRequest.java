@@ -9,6 +9,7 @@ import net.serenitybdd.rest.SerenityRest;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.utils.JsonUtils.convertToJson;
 import static io.restassured.RestAssured.reset;
 
 public class ApiRequest {
@@ -43,17 +44,17 @@ public class ApiRequest {
     }
 
     public Response post(Object payload) {
-        response = request.body(payload).post();
+        response = request.body(convertToJson(payload)).post();
         return response;
     }
 
     public Response patch(Object payload) {
-        response = request.body(payload).patch();
+        response = request.body(convertToJson(payload)).patch();
         return response;
     }
 
     public Response put(Object payload) {
-        response = request.body(payload).put();
+        response = request.body(convertToJson(payload)).put();
         return response;
     }
 
@@ -69,6 +70,11 @@ public class ApiRequest {
 
     protected ApiRequest setPathParam(String param, String value) {
         request.pathParam(param, value);
+        return this;
+    }
+
+    protected ApiRequest setQueryParam(String param, String value) {
+        request.queryParam(param, value);
         return this;
     }
 }
