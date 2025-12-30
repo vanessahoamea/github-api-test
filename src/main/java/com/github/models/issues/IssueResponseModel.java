@@ -10,20 +10,20 @@ import java.util.stream.Collectors;
 
 @Getter
 public class IssueResponseModel {
-    private Integer id;
-    private Integer number;
-    private String title;
-    private String body;
-    private String assignee;
-    private List<String> labels;
-    private String state;
-    private String stateReason;
-    private Boolean locked;
-    private String activeLockReason;
+    private final Long id;
+    private final Integer number;
+    private final String title;
+    private final String body;
+    private final String assignee;
+    private final List<String> labels;
+    private final String state;
+    private final String stateReason;
+    private final Boolean locked;
+    private final String activeLockReason;
 
     public IssueResponseModel(Response response) {
         JsonPath jsonPath = response.jsonPath();
-        id = jsonPath.getInt("id");
+        id = jsonPath.getLong("id");
         number = jsonPath.getInt("number");
         title = jsonPath.getString("title");
         body = jsonPath.getString("body");

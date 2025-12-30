@@ -1,8 +1,8 @@
-@GitHub
+@GitHub @issue:GRA-1
 Feature: GitHub REST API - Issue endpoints test
   For documentation, see: https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28
 
-  @smoke
+  @smoke @issue:GRA-9
   Scenario: Create new issue
     Given I am authenticated as a GitHub user
     And I have access to a repository with the following properties
@@ -16,7 +16,7 @@ Feature: GitHub REST API - Issue endpoints test
     And the create issue response contains the correct data
     And the get issue endpoint response reflects the changes
 
-  @regression
+  @regression @issue:GRA-10
   Scenario: Update issue
     Given I have successfully created a new issue
     When I update the newly created issue with the following details
@@ -27,7 +27,7 @@ Feature: GitHub REST API - Issue endpoints test
     And the update issue response contains the correct data
     And the get issue endpoint response reflects the changes
 
-  @regression @final
+  @regression @final @issue:GRA-11
   Scenario: Lock issue
     Given I have successfully created a new issue
     When I lock the newly created issue with the following reason

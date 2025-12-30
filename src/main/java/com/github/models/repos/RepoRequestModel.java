@@ -13,12 +13,12 @@ import static com.github.utils.RandomValueUtils.generateRandomSentence;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RepoRequestModel {
-    private String name;
-    private String description;
-    private String homepage;
-    @JsonProperty("private") private Boolean isPrivate;
-    @JsonProperty("has_issues") private Boolean hasIssues;
-    @JsonProperty("auto_init") private Boolean autoInit;
+    private final String name;
+    private final String description;
+    private final String homepage;
+    @JsonProperty("private") private final Boolean isPrivate;
+    @JsonProperty("has_issues") private final Boolean hasIssues;
+    @JsonProperty("auto_init") private final Boolean autoInit;
 
     public RepoRequestModel(Map<String, String> repoDetails) {
         String providedDescription = repoDetails.get("description");

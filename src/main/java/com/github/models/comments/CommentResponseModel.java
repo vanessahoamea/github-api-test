@@ -8,9 +8,9 @@ import java.util.Map;
 
 @Getter
 public class CommentResponseModel {
-    private Long id;
-    private String body;
-    private Map<String, Object> reactions;
+    private final Long id;
+    private final String body;
+    private final Map<String, Object> reactions;
 
     public CommentResponseModel(Response response) {
         JsonPath jsonPath = response.jsonPath();

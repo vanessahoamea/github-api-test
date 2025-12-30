@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class UserResponseModel {
-    private String login;
+    private final String login;
 
     public UserResponseModel(Response response) {
         JsonPath jsonPath = response.jsonPath();

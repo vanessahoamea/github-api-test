@@ -6,16 +6,16 @@ import lombok.Getter;
 
 @Getter
 public class RepoResponseModel {
-    private Integer id;
-    private String name;
-    private String description;
-    private String homepage;
-    private Boolean isPrivate;
-    private Boolean hasIssues;
+    private final Long id;
+    private final String name;
+    private final String description;
+    private final String homepage;
+    private final Boolean isPrivate;
+    private final Boolean hasIssues;
 
     public RepoResponseModel(Response response) {
         JsonPath jsonPath = response.jsonPath();
-        id = jsonPath.getInt("id");
+        id = jsonPath.getLong("id");
         name = jsonPath.getString("name");
         description = jsonPath.getString("description");
         homepage = jsonPath.getString("homepage");

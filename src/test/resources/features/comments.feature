@@ -1,10 +1,10 @@
-@GitHub
+@GitHub @issue:GRA-3
 Feature: GitHub REST API - Comment endpoints test
   For documentation, see:
   - https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28
   - https://docs.github.com/en/rest/reactions/reactions?apiVersion=2022-11-28
 
-  @smoke
+  @smoke @issue:GRA-12
   Scenario: Create new comment
     Given I am authenticated as a GitHub user
     And I have access to a repository with the following properties
@@ -21,7 +21,7 @@ Feature: GitHub REST API - Comment endpoints test
     And the create comment response contains the correct data
     And the get comment endpoint response reflects the changes
 
-  @regression
+  @regression @issue:GRA-13
   Scenario: Create new reaction to comment
     Given I have successfully created a new comment
     When I create a reaction to the comment with the following content
@@ -32,7 +32,7 @@ Feature: GitHub REST API - Comment endpoints test
     And the create reaction response contains the correct data
     And the get comment endpoint response reflects the updated reactions
 
-  @regression @final
+  @regression @final @issue:GRA-14
   Scenario: Delete comment
     Given I have successfully created a new comment
     When I delete the newly created comment

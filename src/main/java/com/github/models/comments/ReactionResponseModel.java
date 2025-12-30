@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Getter
 public class ReactionResponseModel {
-    private Integer id;
-    private String content;
+    private final Long id;
+    private final String content;
 
     public ReactionResponseModel(Response response) {
         JsonPath jsonPath = response.jsonPath();
-        id = jsonPath.getInt("id");
+        id = jsonPath.getLong("id");
         content = jsonPath.getString("content");
     }
 }

@@ -1,8 +1,8 @@
-@GitHub
+@GitHub @issue:GRA-2
 Feature: GitHub REST API - Repo endpoints test
   For documentation, see: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28
 
-  @smoke
+  @smoke @issue:GRA-6
   Scenario: Create new repo
     Given I am authenticated as a GitHub user
     When I create a new repository for my user with the following details
@@ -13,7 +13,7 @@ Feature: GitHub REST API - Repo endpoints test
     And the create repo response contains the correct data
     And the get repo endpoint response reflects the changes
 
-  @regression
+  @regression @issue:GRA-7
   Scenario: Update repo
     Given I have successfully created a new repository
     When I update the newly created repository with the following details
@@ -24,7 +24,7 @@ Feature: GitHub REST API - Repo endpoints test
     And the update repo response contains the correct data
     And the get repo endpoint response reflects the changes
 
-  @regression
+  @regression @issue:GRA-8
   Scenario: Delete repo
     Given I have successfully created a new repository
     When I delete the newly created repository

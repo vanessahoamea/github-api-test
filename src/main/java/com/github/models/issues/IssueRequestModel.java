@@ -12,13 +12,13 @@ import static com.github.utils.RandomValueUtils.*;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class IssueRequestModel {
-    private String title;
-    private String body;
-    private String assignee;
-    private List<String> labels;
-    private String state;
-    @JsonProperty("state_reason") private String stateReason;
-    @JsonProperty("lock_reason") private String lockReason;
+    private final String title;
+    private final String body;
+    private final String assignee;
+    private final List<String> labels;
+    private final String state;
+    @JsonProperty("state_reason") private final String stateReason;
+    @JsonProperty("lock_reason") private final String lockReason;
 
     public IssueRequestModel(Map<String, String> issueDetails) {
         Context context = Context.getContext();
