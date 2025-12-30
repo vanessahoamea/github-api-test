@@ -1,4 +1,4 @@
-@GitHub @Issues
+@GitHub
 Feature: GitHub REST API - Issue endpoints test
   For documentation, see: https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28
 

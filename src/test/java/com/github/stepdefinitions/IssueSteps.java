@@ -2,15 +2,11 @@ package com.github.stepdefinitions;
 
 import com.github.models.issues.IssueRequestModel;
 import com.github.models.issues.IssueResponseModel;
-import com.github.models.repos.RepoRequestModel;
-import com.github.models.repos.RepoResponseModel;
 import com.github.persistence.Context;
 import com.github.requests.GenericRetryClient;
 import com.github.requests.IssueRequest;
-import com.github.requests.RepoRequest;
 import com.github.utils.JsonUtils;
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -32,15 +28,6 @@ public class IssueSteps {
 
     private IssueRequestModel issueRequestObject;
     private IssueResponseModel issueResponseObject;
-
-    @Given("I have access to a repository with the following properties")
-    public void initializeRepo(DataTable repoTable) {
-        Map<String, String> repoDetails = repoTable.asMaps().getFirst();
-        RepoRequestModel repoRequestObject = new RepoRequestModel(repoDetails);
-        Response response = new RepoRequest().postRepo(repoRequestObject);
-        RepoResponseModel repoResponseObject = new RepoResponseModel(response);
-        context.setRepoName(repoResponseObject.getName());
-    }
 
     @Given("I have successfully created a new issue")
     public void validateIssueNumber() {
@@ -108,10 +95,10 @@ public class IssueSteps {
     @Then("the update issue response contains the correct data")
     public void validateUpdateIssueResponse() {
         softly.assertThat(Objects.equals(issueResponseObject.getState(), issueRequestObject.getState()))
-                .as("The received repo state should match the data sent with the request")
+                .as("The received issue state should match the data sent with the request")
                 .isTrue();
         softly.assertThat(Objects.equals(issueResponseObject.getStateReason(), issueRequestObject.getStateReason()))
-                .as("The received repo state reason should match the data sent with the request")
+                .as("The received issue state reason should match the data sent with the request")
                 .isTrue();
 
         softly.assertAll();
@@ -133,22 +120,12 @@ public class IssueSteps {
         IssueResponseModel getIssueResponseObject = new IssueResponseModel(getIssueResponse);
 
         softly.assertThat(Objects.equals(getIssueResponseObject.getLocked(), true))
-                .as("The received repo lock status should be true")
+                .as("The received issue lock status should be true")
                 .isTrue();
         softly.assertThat(Objects.equals(getIssueResponseObject.getActiveLockReason(), issueRequestObject.getLockReason()))
-                .as("The received repo lock reason should match the data sent with the request")
+                .as("The received issue lock reason should match the data sent with the request")
                 .isTrue();
 
         softly.assertAll();
-    }
-
-    @After("@final")
-    public void cleanup() {
-        retryClient.waitForStatusCode(
-                () -> new RepoRequest().deleteRepo(context.getUsername(), context.getRepoName()),
-                HttpStatus.NO_CONTENT_204
-        );
-        context.setIssueNumber(null);
-        context.setRepoName(null);
     }
 }

@@ -29,11 +29,4 @@ public class RepoRequest extends ApiRequest {
                 .setPathParam("repo", repoName)
                 .delete();
     }
-
-    public Response getAllUserRepos() {
-        return setBasePath(Endpoints.USER_REPOS_ENDPOINT)
-                .setQueryParam("sort", "created")
-                .setQueryParam("direction", "desc")
-                .get();
-    }
 }

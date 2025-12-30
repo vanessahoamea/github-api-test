@@ -35,11 +35,4 @@ public class IssueRequest extends ApiRequest {
                 .setPathParam("number", issueNumber.toString())
                 .put(issue);
     }
-
-    public Response getAllUserIssues() {
-        return setBasePath(Endpoints.REPO_ISSUES_ENDPOINT)
-                .setQueryParam("sort", "created")
-                .setQueryParam("direction", "desc")
-                .get();
-    }
 }

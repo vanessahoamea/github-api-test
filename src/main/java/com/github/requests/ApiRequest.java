@@ -72,9 +72,4 @@ public class ApiRequest {
         request.pathParam(param, value);
         return this;
     }
-
-    protected ApiRequest setQueryParam(String param, String value) {
-        request.queryParam(param, value);
-        return this;
-    }
 }
