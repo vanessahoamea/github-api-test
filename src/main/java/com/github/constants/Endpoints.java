@@ -7,4 +7,7 @@ public class Endpoints {
     public static final String REPO_ISSUES_ENDPOINT = "/repos/{owner}/{repo}/issues";
     public static final String ISSUE_ENDPOINT = "/repos/{owner}/{repo}/issues/{number}";
     public static final String ISSUE_LOCK_ENDPOINT = "/repos/{owner}/{repo}/issues/{number}/lock";
+    public static final String ISSUE_COMMENTS_ENDPOINT = "/repos/{owner}/{repo}/issues/{number}/comments";
+    public static final String COMMENT_ENDPOINT = "/repos/{owner}/{repo}/issues/comments/{id}";
+    public static final String COMMENT_REACTIONS_ENDPOINT = "/repos/{owner}/{repo}/issues/comments/{id}/reactions";
 }

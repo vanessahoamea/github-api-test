@@ -13,6 +13,7 @@ public class Context {
     private String username;
     private String repoName;
     private Integer issueNumber;
+    private Long commentID;
 
     public static synchronized Context getContext() {
         if (instance == null) {

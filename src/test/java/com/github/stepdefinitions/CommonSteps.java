@@ -49,8 +49,6 @@ public class CommonSteps {
 
     @After("@final")
     public void cleanup() {
-        System.out.println("In cleanup ISSUES:");
-        System.out.println("\u001B[32m" + context.getRepoName() + "\u001B[0m"); // todo
         retryClient.waitForStatusCode(
                 () -> new RepoRequest().deleteRepo(context.getUsername(), context.getRepoName()),
                 HttpStatus.NO_CONTENT_204
