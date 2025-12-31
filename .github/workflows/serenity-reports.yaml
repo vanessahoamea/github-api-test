@@ -7,6 +7,8 @@ on:
       - 'README.md'
       - '.gitignore'
       - '.idea/**'
+      - 'postman/**'
+      - '.github/workflows/newman-reports.yaml'
 
 permissions:
   contents: write

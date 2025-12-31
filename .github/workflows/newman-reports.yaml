@@ -1,0 +1,52 @@
+name: Postman Tests with GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'postman/**'
+      - '.github/workflows/newman-reports.yaml'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.7.0
+
+      - name: Install Newman
+        run: |
+          npm install -g newman newman-reporter-htmlextra
+
+      - name: Run Postman tests with Newman
+        run: |
+          newman run postman/GitHub-API-Collection.json \
+            --env-var "baseURL=https://api.github.com" \
+            --env-var "accessToken=${{ secrets.ACCESS_TOKEN }}" \
+            --delay-request 1500 \
+            --reporters cli,htmlextra \
+            --reporter-htmlextra-export postman/newman/index.html
+
+      - name: Sanitize secrets from reports
+        if: always()
+        run: |
+          python .github/scripts/sanitize_reports.py ./postman/newman ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./postman/newman
+          destination_dir: reports-postman

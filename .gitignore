@@ -40,3 +40,6 @@ build/
 ### Environment ###
 .env
 serenity.properties
+
+### Postman ###
+postman/newman

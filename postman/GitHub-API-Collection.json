@@ -1,0 +1,965 @@
+{
+	"info": {
+		"_postman_id": "1a3671e4-f3bf-4816-94c7-dce463871788",
+		"name": "GitHub API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20675129"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get authenticated user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Get user - Status code is 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"Get user - Response is a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"    pm.collectionVariables.set(\"username\", response.login);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/user",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Repos",
+			"item": [
+				{
+					"name": "Create new repo",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const randomWebsite = pm.variables.replaceIn(\"{{$randomDomainName}}\");",
+									"pm.collectionVariables.set(\"repoHomepage\", randomWebsite);",
+									"",
+									"const randomDescription = pm.variables.replaceIn(\"{{$randomLoremSentence}}\");",
+									"pm.collectionVariables.set(\"repoDescription\", randomDescription);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Create new repo - Status code is 201\", () => {",
+									"    pm.expect(pm.response.code).to.eql(201);",
+									"});",
+									"",
+									"pm.test(\"Create new repo - Response is a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"    pm.collectionVariables.set(\"repoName\", response.name);",
+									"    pm.collectionVariables.set(\"repoID\", response.id);",
+									"});",
+									"",
+									"pm.test(\"Create new repo - Response contains correct data\", () => {",
+									"    const repoHomepage = pm.collectionVariables.get(\"repoHomepage\");",
+									"    const repoDescription = pm.collectionVariables.get(\"repoDescription\");",
+									"",
+									"    pm.expect(response.name).to.eql(\"GitHub-REST-API-Practice\");",
+									"    pm.expect(response.description).to.eql(repoDescription);",
+									"    pm.expect(response.homepage).to.eql(repoHomepage);",
+									"    pm.expect(response.private).to.eql(false);",
+									"    pm.expect(response.has_issues).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"GitHub-REST-API-Practice\",\n    \"description\": \"{{repoDescription}}\",\n    \"homepage\": \"{{repoHomepage}}\",\n    \"private\": false,\n    \"has_issues\": true,\n    \"auto_init\": true\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/user/repos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								"repos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get repo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Get repo - Status code is 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"Get repo - Response is a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"});",
+									"",
+									"pm.test(\"Get repo - Response contains correct data\", () => {",
+									"    const repoID = pm.collectionVariables.get(\"repoID\");",
+									"    pm.expect(response.id).to.eql(repoID);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update repo",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const randomDescription = pm.variables.replaceIn(\"{{$randomLoremSentence}}\");",
+									"pm.collectionVariables.set(\"repoDescription\", randomDescription);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Update repo - Status code is 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"Update repo - Response is a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"});",
+									"",
+									"pm.test(\"Update repo - Response contains correct data\", () => {",
+									"    const repoDescription = pm.collectionVariables.get(\"repoDescription\");",
+									"    pm.expect(response.description).to.eql(repoDescription);",
+									"    pm.expect(response.private).to.eql(true);",
+									"});",
+									"",
+									"// jump to GET repos request",
+									"pm.execution.setNextRequest(\"Get all user repos\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"{{repoDescription}}\",\n    \"private\": true\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete repo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete repo - Status code is 204\", () => {",
+									"    pm.expect(pm.response.code).to.eql(204);",
+									"});",
+									"",
+									"// stop execution",
+									"pm.execution.setNextRequest(null);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all user repos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Get all user repos - Status code is 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"Get all user repos - Response is a valid JSON array\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"    pm.expect(response).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/user/repos?sort=created&direction=desc",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								"repos"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "created"
+								},
+								{
+									"key": "direction",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Issues",
+			"item": [
+				{
+					"name": "Create new issue",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const randomIssueTitle = pm.variables.replaceIn(\"{{$randomLoremSentence}}\");",
+									"pm.collectionVariables.set(\"issueTitle\", randomIssueTitle);",
+									"",
+									"const randomIssueBody = pm.variables.replaceIn(\"<h3>This is a heading</h3><p>This is the issue body. {{$randomLoremParagraph}}</p>\");",
+									"pm.collectionVariables.set(\"issueBody\", randomIssueBody);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Create new issue - Status code is 201\", () => {",
+									"    pm.expect(pm.response.code).to.eql(201);",
+									"});",
+									"",
+									"pm.test(\"Create new issue - Response is a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"    pm.collectionVariables.set(\"issueNumber\", response.number);",
+									"    pm.collectionVariables.set(\"issueID\", response.id);",
+									"});",
+									"",
+									"pm.test(\"Create new issue - Response contains correct data\", () => {",
+									"    const issueTitle = pm.collectionVariables.get(\"issueTitle\");",
+									"    const issueBody = pm.collectionVariables.get(\"issueBody\");",
+									"    const username = pm.collectionVariables.get(\"username\");",
+									"",
+									"    pm.expect(response.title).to.eql(issueTitle);",
+									"    pm.expect(response.body).to.eql(issueBody);",
+									"",
+									"    pm.expect(response.assignee).to.be.an(\"object\");",
+									"    pm.expect(response.assignee.login).to.eql(username);",
+									"",
+									"    pm.expect(response.labels).to.be.an(\"array\");",
+									"    const hasBugLabel = response.labels.some(label => label.name === \"bug\");",
+									"    const hasGoodFirstIssueLabel = response.labels.some(label => label.name === \"good first issue\");",
+									"    pm.expect(hasBugLabel).to.be.true;",
+									"    pm.expect(hasGoodFirstIssueLabel).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{issueTitle}}\",\n    \"body\": \"{{issueBody}}\",\n    \"assignee\": \"{{username}}\",\n    \"labels\": [\"bug\", \"good first issue\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}/issues",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Get issue - Status code is 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"Get issue - Response is a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"});",
+									"",
+									"pm.test(\"Get issue - Response contains correct data\", () => {",
+									"    const issueID = pm.collectionVariables.get(\"issueID\");",
+									"    pm.expect(response.id).to.eql(issueID);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}/issues/{{issueNumber}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}",
+								"issues",
+								"{{issueNumber}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Update issue - Status code is 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"Update issue - Response is a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"});",
+									"",
+									"pm.test(\"Update issue - Response contains correct data\", () => {",
+									"    pm.expect(response.state).to.eql(\"closed\");",
+									"    pm.expect(response.state_reason).to.eql(\"completed\");",
+									"});",
+									"",
+									"// jump to GET issues request",
+									"pm.execution.setNextRequest(\"Get all repo issues\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\": \"closed\",\n    \"state_reason\": \"completed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}/issues/{{issueNumber}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}",
+								"issues",
+								"{{issueNumber}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lock issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Lock issue - Status code is 204\", () => {",
+									"    pm.expect(pm.response.code).to.eql(204);",
+									"});",
+									"",
+									"// jump to DELETE repo request",
+									"pm.execution.setNextRequest(\"Delete repo\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lock_reason\": \"resolved\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}/issues/{{issueNumber}}/lock",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}",
+								"issues",
+								"{{issueNumber}}",
+								"lock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all repo issues",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Get issue - Status code is 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"Get issue - Response is a valid JSON array\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"    pm.expect(response).to.be.an(\"array\");",
+									"});",
+									"",
+									"pm.test(\"Get issue - Response contains the newly created issue\", () => {",
+									"    const issueNumber = pm.collectionVariables.get(\"issueNumber\");",
+									"    const newIssue = response.find(issue => issue.number === issueNumber);",
+									"    pm.expect(newIssue).to.not.be.undefined;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}/issues?state=all",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}",
+								"issues"
+							],
+							"query": [
+								{
+									"key": "state",
+									"value": "all"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Create issue comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Create issue comment - Status code is 201\", () => {",
+									"    pm.expect(pm.response.code).to.eql(201);",
+									"});",
+									"",
+									"pm.test(\"Create issue comment - Response is a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"    pm.collectionVariables.set(\"commentID\", response.id);",
+									"});",
+									"",
+									"pm.test(\"Create issue comment - Response contains correct data\", () => {",
+									"    pm.expect(response.body).to.eql(\"I'm also experiencing this issue.\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"body\": \"I'm also experiencing this issue.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}/issues/{{issueNumber}}/comments",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}",
+								"issues",
+								"{{issueNumber}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "React to issue comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"React to issue comment - Status code is 201\", () => {",
+									"    pm.expect(pm.response.code).to.eql(201);",
+									"});",
+									"",
+									"pm.test(\"React to issue comment - Response is a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"});",
+									"",
+									"pm.test(\"React to issue comment - Response contains correct data\", () => {",
+									"    pm.expect(response.content).to.eql(\"eyes\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"eyes\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}/issues/comments/{{commentID}}/reactions",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}",
+								"issues",
+								"comments",
+								"{{commentID}}",
+								"reactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete issue comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete issue comment - Status code is 204\", () => {",
+									"    pm.expect(pm.response.code).to.eql(204);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}/issues/comments/{{commentID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}",
+								"issues",
+								"comments",
+								"{{commentID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all issue comments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = {};",
+									"",
+									"pm.test(\"Get all issue comments - Status code is 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"Get all issue comments - Response is a valid JSON array\", () => {",
+									"    pm.response.to.be.json;",
+									"    response = pm.response.json();",
+									"    pm.expect(response).to.be.an(\"array\");",
+									"});",
+									"",
+									"pm.test(\"Get issue - Response does not contain deleted comment\", () => {",
+									"    const commentID = pm.collectionVariables.get(\"commentID\");",
+									"    const deletedCommentIndex = response.findIndex(comment => comment.id === commentID);",
+									"    pm.expect(deletedCommentIndex).to.be.eql(-1);",
+									"});",
+									"",
+									"// jump to PUT issue request",
+									"pm.execution.setNextRequest(\"Lock issue\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/repos/{{username}}/{{repoName}}/issues/{{issueNumber}}/comments",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"repos",
+								"{{username}}",
+								"{{repoName}}",
+								"issues",
+								"{{issueNumber}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://api.github.com",
+			"disabled": true
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"disabled": true
+		},
+		{
+			"key": "username",
+			"value": ""
+		},
+		{
+			"key": "repoHomepage",
+			"value": ""
+		},
+		{
+			"key": "repoDescription",
+			"value": ""
+		},
+		{
+			"key": "repoName",
+			"value": ""
+		},
+		{
+			"key": "repoID",
+			"value": ""
+		},
+		{
+			"key": "issueTitle",
+			"value": ""
+		},
+		{
+			"key": "issueBody",
+			"value": ""
+		},
+		{
+			"key": "issueNumber",
+			"value": ""
+		},
+		{
+			"key": "issueID",
+			"value": ""
+		},
+		{
+			"key": "commentID",
+			"value": ""
+		}
+	]
+}
