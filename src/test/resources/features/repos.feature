@@ -24,7 +24,7 @@ Feature: GitHub REST API - Repo endpoints test
     And the update repo response contains the correct data
     And the get repo endpoint response reflects the changes
 
-  @regression @issue:GRA-8
+  @regression @wait @issue:GRA-8
   Scenario: Delete repo
     Given I have successfully created a new repository
     When I delete the newly created repository

@@ -32,7 +32,7 @@ Feature: GitHub REST API - Comment endpoints test
     And the create reaction response contains the correct data
     And the get comment endpoint response reflects the updated reactions
 
-  @regression @final @issue:GRA-14
+  @regression @wait @final @issue:GRA-14
   Scenario: Delete comment
     Given I have successfully created a new comment
     When I delete the newly created comment
