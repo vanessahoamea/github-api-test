@@ -7,8 +7,6 @@ on:
       - 'README.md'
       - '.gitignore'
       - '.idea/**'
-      - 'postman/**'
-      - '.github/workflows/newman-reports.yaml'
 
 permissions:
   contents: write
@@ -59,4 +57,4 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./target/site/serenity
-        destination_dir: reports
+        destination_dir: reports-serenity
