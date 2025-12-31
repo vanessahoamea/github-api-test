@@ -1,7 +1,7 @@
 ## About
 This project is an automated test suite for the [GitHub Rest API](https://docs.github.com/en/rest?apiVersion=2022-11-28). It contains test cases for validating various CRUD functionalities related to repositories, issues and comments.
 
-It is also possible to generate HTML reports detailing the test results. These reports are automatically uploaded to GitHub pages: https://vanessahoamea.github.io/github-api-test/reports.
+It is also possible to generate HTML reports detailing the test results. These reports are automatically uploaded to GitHub Pages: https://vanessahoamea.github.io/github-api-test/reports-serenity.
 
 ## Setup
 To run the tests locally, you will need an `.env` file in the root directory, containing your [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic):
@@ -30,7 +30,23 @@ mvn clean verify
 
 You can then find the reports at `target/site/serenity/index.html`.
 
-## Tech stack:
+## Postman
+This repository also contains the exported Postman collection that served as a base for the Cucumber tests, found at `postman/GitHub-API-Collection.json`.
+
+The tests in this collection can also be run locally using the Newman CLI tool.
+
+```
+newman run postman/GitHub-API-Collection.json \
+    --env-var "baseURL=https://api.github.com" \
+    --env-var "accessToken=<your_personal_access_token>" \
+    --delay-request 1500 \
+    --reporters cli,htmlextra \
+    --reporter-htmlextra-export postman/newman/index.html
+```
+
+Running the command above will also generate its own HTML report. An example can be found on this project's GitHub Pages: https://vanessahoamea.github.io/github-api-test/reports-newman.
+
+## Tech stack
 - Java
 - REST Assured
 - Cucumber
