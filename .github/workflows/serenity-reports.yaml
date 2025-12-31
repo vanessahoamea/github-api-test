@@ -43,7 +43,7 @@ jobs:
           -Djira.project=${{ secrets.JIRA_PROJECT }} \
           -Djira.username=${{ secrets.JIRA_USERNAME }} \
           -Djira.password=${{ secrets.JIRA_PASSWORD }} \
-          -Dserenity.public.url=https://vanessahoamea.github.io/github-api-test/reports
+          -Dserenity.public.url=https://vanessahoamea.github.io/github-api-test/reports \
           -Dserenity.jira.workflow.active=true
 
     - name: Sanitize secrets from reports

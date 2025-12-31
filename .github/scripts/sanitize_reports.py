@@ -39,7 +39,7 @@ def sanitize_files(directory, api_key):
                 continue
 
     if processed > 0:
-        print(f"Processed {processed} files")
+        print(f"{directory}: Processed {processed} files")
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
