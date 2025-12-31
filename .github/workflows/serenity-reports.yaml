@@ -3,6 +3,10 @@ name: Serenity Tests with GitHub Pages
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
+      - '.idea/**'
 
 permissions:
   contents: write
@@ -36,7 +40,11 @@ jobs:
       run: |
         mvn clean verify \
           -Djira.url=${{ secrets.JIRA_URL }} \
-          -Djira.project=${{ secrets.JIRA_PROJECT }}
+          -Djira.project=${{ secrets.JIRA_PROJECT }} \
+          -Djira.username=${{ secrets.JIRA_USERNAME }} \
+          -Djira.password=${{ secrets.JIRA_PASSWORD }} \
+          -Dserenity.public.url=https://vanessahoamea.github.io/github-api-test/reports
+          -Dserenity.jira.workflow.active=true
 
     - name: Sanitize secrets from reports
       if: always()
